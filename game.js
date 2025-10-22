@@ -15,7 +15,7 @@ window.initializeGame = function(username) {
     let selectedPiece = null;
 
     // --- WebSocket Connection ---
-    const conn = new WebSocket('ws://35.205.251.104:8080');
+    const conn = new WebSocket('wss://300e7a9d67fb.ngrok-free.app:8080');
     window.gameSocket = conn; // Store reference
 
     conn.onopen = function(e) {
