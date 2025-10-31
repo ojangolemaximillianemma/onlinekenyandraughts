@@ -1,1 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M-Pesa STK Push Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f7f7f7;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+    button {
+      background-color: #008000;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #006400;
+    }
+    #output {
+      margin-top: 15px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💰 M-Pesa STK Push Test</h2>
+
+  <label>Phone Number (format: 2547XXXXXXXX):</label>
+  <input type="text" id="phone" placeholder="2547XXXXXXXX" />
+
+  <label>Username:</label>
+  <input type="text" id="username" placeholder="your username" />
+
+  <button id="payBtn">PAY NOW</button>
+
+  <div id="output"></div>
+
+  <script>
+    const PAY_URL = "https://us-central1-onlinekenyandraughts.cloudfunctions.net/initiateStkPush"; 
+    // 👆 Replace YOUR_PROJECT_ID with your actual Firebase project ID
+
+    const payBtn = document.getElementById("payBtn");
+    const output = document.getElementById("output");
+
+    payBtn.addEventListener("click", async () => {
+      const phone = document.getElementById("phone").value.trim();
+      const username = document.getElementById("username").value.trim();
+
+      if (!phone || !username) {
+        output.textContent = "⚠️ Please enter both phone and username.";
+        return;
+      }
+
+      output.textContent = "⌛ Sending STK push request...";
+
+      try {
+        const response = await fetch(PAY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone, username })
+        });
+
+        const data = await response.json();
+        output.textContent = "✅ Response:\n" + JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = "❌ Error:\n" + err;
+      }
+    });
+  </script>
+
+</body>
+</html>
 
